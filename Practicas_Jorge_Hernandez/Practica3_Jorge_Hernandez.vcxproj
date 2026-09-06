@@ -77,7 +77,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\JORGE\source\repos\JorgeManuelHernandezIrineo\Computacion-Grafica\Practica3_Jorge_Hernandez;C:\Users\JORGE\source\repos\JorgeManuelHernandezIrineo\Computacion-Grafica\External Libraries\GLFW\include;C:\Users\JORGE\source\repos\JorgeManuelHernandezIrineo\Computacion-Grafica\External Libraries\GLEW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\JORGE\source\repos\JorgeManuelHernandezIrineo\Computacion-Grafica\External Libraries\glm;C:\Users\JORGE\source\repos\JorgeManuelHernandezIrineo\Computacion-Grafica\External Libraries\GLFW\include;C:\Users\JORGE\source\repos\JorgeManuelHernandezIrineo\Computacion-Grafica\External Libraries\GLEW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -94,7 +94,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\JORGE\source\repos\JorgeManuelHernandezIrineo\Computacion-Grafica\Practica3_Jorge_Hernandez;C:\Users\JORGE\source\repos\JorgeManuelHernandezIrineo\Computacion-Grafica\External Libraries\GLFW\include;C:\Users\JORGE\source\repos\JorgeManuelHernandezIrineo\Computacion-Grafica\External Libraries\GLEW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\JORGE\source\repos\JorgeManuelHernandezIrineo\Computacion-Grafica\External Libraries\glm;C:\Users\JORGE\source\repos\JorgeManuelHernandezIrineo\Computacion-Grafica\External Libraries\GLFW\include;C:\Users\JORGE\source\repos\JorgeManuelHernandezIrineo\Computacion-Grafica\External Libraries\GLEW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -109,7 +109,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\JORGE\source\repos\JorgeManuelHernandezIrineo\Computacion-Grafica\Practica3_Jorge_Hernandez;C:\Users\JORGE\source\repos\JorgeManuelHernandezIrineo\Computacion-Grafica\External Libraries\GLFW\include;C:\Users\JORGE\source\repos\JorgeManuelHernandezIrineo\Computacion-Grafica\External Libraries\GLEW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\JORGE\source\repos\JorgeManuelHernandezIrineo\Computacion-Grafica\External Libraries\glm;C:\Users\JORGE\source\repos\JorgeManuelHernandezIrineo\Computacion-Grafica\External Libraries\GLFW\include;C:\Users\JORGE\source\repos\JorgeManuelHernandezIrineo\Computacion-Grafica\External Libraries\GLEW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -126,7 +126,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\JORGE\source\repos\JorgeManuelHernandezIrineo\Computacion-Grafica\Practica3_Jorge_Hernandez;C:\Users\JORGE\source\repos\JorgeManuelHernandezIrineo\Computacion-Grafica\External Libraries\GLFW\include;C:\Users\JORGE\source\repos\JorgeManuelHernandezIrineo\Computacion-Grafica\External Libraries\GLEW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\JORGE\source\repos\JorgeManuelHernandezIrineo\Computacion-Grafica\External Libraries\glm;C:\Users\JORGE\source\repos\JorgeManuelHernandezIrineo\Computacion-Grafica\External Libraries\GLFW\include;C:\Users\JORGE\source\repos\JorgeManuelHernandezIrineo\Computacion-Grafica\External Libraries\GLEW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
