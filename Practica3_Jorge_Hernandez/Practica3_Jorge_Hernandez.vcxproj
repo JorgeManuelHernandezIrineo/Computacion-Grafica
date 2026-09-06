@@ -24,6 +24,7 @@
     <ProjectGuid>{494b76b8-7a49-4c3e-9bb8-43da518112a6}</ProjectGuid>
     <RootNamespace>Practica3JorgeHernandez</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Practicas_Jorge_Hernandez</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -135,14 +136,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Main_P3.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Shader.h" />
+    <ClCompile Include="Main_Modelado.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\core.frag" />
     <None Include="Shader\core.vs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Shader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
