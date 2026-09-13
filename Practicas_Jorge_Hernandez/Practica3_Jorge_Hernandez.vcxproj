@@ -136,14 +136,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Modelado_practica4.cpp" />
+    <ClCompile Include="Modelado_Jerarquico.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\core.frag" />
     <None Include="Shader\core.vs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Shader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
