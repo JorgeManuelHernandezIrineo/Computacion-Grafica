@@ -1,6 +1,6 @@
-// Previo 5 Modelado Jerarquico
+// Práctica 5 Modelado Jerarquico
 // Hernández Irineo Jorge Manuel
-// Fecha: 12 - septiembre - 2026
+// Fecha: 18 - septiembre - 2026
 // No.de cuenta : 423045291
 
 #include<iostream>
