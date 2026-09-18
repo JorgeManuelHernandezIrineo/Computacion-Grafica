@@ -464,15 +464,15 @@ int main() {
 		 dedos -= 0.02f;
 
 	 
-	 if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS && dedos2 < 100.0f)
+	 if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS && dedos2 < 0.0f)
 		 dedos2 += 0.02f;
-	 if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS && dedos2 > 0.0f)
+	 if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS && dedos2 > -45.0f)
 		 dedos2 -= 0.02f;
 
 	 
-	 if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS && dedos3 < 80.0f)
+	 if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS && dedos3 < 0.0f)
 		 dedos3 += 0.02f;
-	 if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS && dedos3 > 0.0f)
+	 if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS && dedos3 > -45.0f)
 		 dedos3 -= 0.02f;
 
 	 /*if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
