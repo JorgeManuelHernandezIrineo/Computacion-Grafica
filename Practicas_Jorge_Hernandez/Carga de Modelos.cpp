@@ -1,6 +1,6 @@
-// Previo 6 Carga d emodelos
+// Práctica 6 Carga de modelos
 // Hernández Irineo Jorge Manuel
-// Fecha: 18 - septiembre - 2026
+// Fecha: 25 - septiembre - 2026
 // No.de cuenta : 423045291
 
 // Std. Includes
@@ -102,7 +102,15 @@ int main( )
     Model dog((char*)"C:/Users/JORGE/Documents/FI/S08/Computación Gráfica/Carga de Modelos/Main/Models/RedDog.obj");
     glm::mat4 projection = glm::perspective( camera.GetZoom( ), ( float )SCREEN_WIDTH/( float )SCREEN_HEIGHT, 0.1f, 100.0f );
     
-  
+    Model plant((char*)"Models/eb_house_plant_01.obj");
+	Model table((char*)"Models/16697_Straight_Leg_Round_Table_Oak_V1.obj");
+	Model cup((char*)"Models/Plastic_Cup.obj");
+	Model chair((char*)"Models/chair.obj");
+	Model hat((char*)"Models/hat.obj");
+	Model flame((char*)"Models/flame.obj");
+
+    // --- AÑADE ESTO PARA VERIFICAR ---
+    //std::cout << "DEBUG: Numero de meshes en la mesa: " << table.meshes.size() << std::endl;
 
     // Game loop
     while (!glfwWindowShouldClose(window))
@@ -117,7 +125,7 @@ int main( )
         DoMovement();
 
         // Clear the colorbuffer
-        glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+        glClearColor(0.85f, 0.25f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         shader.Use();
@@ -131,10 +139,115 @@ int main( )
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
 		dog.Draw(shader);
 
-		model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(2.5f, 2.5f, 2.5f));
+        // 2. EL SILLÓN (Justo debajo y un poco atrás del perro)
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(-0.3f, -0.35f, -0.5f));
+        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-        dog.Draw(shader);
+        chair.Draw(shader);
+
+        // 3. EL SOMBRERO 
+        model = glm::mat4(1.0f);
+       
+        model = glm::translate(model, glm::vec3(0.0f, -1.35f, 0.3f));
+        model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        hat.Draw(shader);
+
+        // 4. LA MESA 
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(2.5f, -1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        table.Draw(shader);
+
+        // 5. EL VASO DE CAFÉ 
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(2.2f, -0.65f, 0.2f));
+        model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        cup.Draw(shader);
+
+        // 6. LA PLANTA 
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(2.8f, -0.65f, -0.2f));
+        model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        plant.Draw(shader);
+
+        // 7. LAS FLAMAS 
+        // Flama 1 Fondo Izquierda
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(-2.5f, -1.0f, -1.5f));
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.25f, 0.25f, 0.25f)); // Más grande
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        flame.Draw(shader);
+
+        // Flama 2  detrás de la mesa
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(6.0f, -0.2f, -2.0f));
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.35f, 0.35f, 0.35f)); // Aún más grande
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        flame.Draw(shader);
+
+        // Flama 3 frente a la mesa
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(6.0f, -1.5f, 0.0f));
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.35f, 0.35f, 0.35f)); // Aún más grande
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        flame.Draw(shader);
+
+        // Flama 4 Enfrente a la izquierda
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(-1.5f, -1.5f, 2.0f));
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        flame.Draw(shader);
+
+  //      // --- 2. DIBUJAR PLANTA AL LADO DEL PERRO ---
+  //      model = glm::mat4(1.0f);
+  //      model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+  //      model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f)); // Reducir escala
+  //      glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+  //      plant.Draw(shader);
+
+  //      model = glm::mat4(1.0f);
+  //      model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
+  //      model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f)); // Reducir escala
+  //      glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+  //      table.Draw(shader);
+
+  //      model = glm::mat4(1.0f);
+  //      model = glm::translate(model, glm::vec3(2.0f, -2.0f, 0.0f));
+  //      model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f)); // Reducir escala
+  //      glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+  //      cup.Draw(shader);
+
+  //      model = glm::mat4(1.0f);
+  //      model = glm::translate(model, glm::vec3(1.0f, -2.0f, 0.0f));
+  //      model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f)); // Reducir escala
+  //      glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+  //      hat.Draw(shader);
+
+  //      model = glm::mat4(1.0f);
+  //      model = glm::translate(model, glm::vec3(1.0f, -2.5f, 0.0f));
+  //      model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f)); // Reducir escala
+  //      glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+  //      flame.Draw(shader);
+
+  //      model = glm::mat4(1.0f);
+  //      model = glm::translate(model, glm::vec3(-2.0f, -2.0f, 0.0f));
+  //      model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f)); // Reducir escala
+  //      glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+  //      chair.Draw(shader);
+       
 
         // Swap the buffers
         glfwSwapBuffers( window );
