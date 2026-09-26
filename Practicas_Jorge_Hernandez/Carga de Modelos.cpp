@@ -211,42 +211,7 @@ int main( )
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         flame.Draw(shader);
 
-  //      // --- 2. DIBUJAR PLANTA AL LADO DEL PERRO ---
-  //      model = glm::mat4(1.0f);
-  //      model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
-  //      model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f)); // Reducir escala
-  //      glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-  //      plant.Draw(shader);
 
-  //      model = glm::mat4(1.0f);
-  //      model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
-  //      model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f)); // Reducir escala
-  //      glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-  //      table.Draw(shader);
-
-  //      model = glm::mat4(1.0f);
-  //      model = glm::translate(model, glm::vec3(2.0f, -2.0f, 0.0f));
-  //      model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f)); // Reducir escala
-  //      glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-  //      cup.Draw(shader);
-
-  //      model = glm::mat4(1.0f);
-  //      model = glm::translate(model, glm::vec3(1.0f, -2.0f, 0.0f));
-  //      model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f)); // Reducir escala
-  //      glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-  //      hat.Draw(shader);
-
-  //      model = glm::mat4(1.0f);
-  //      model = glm::translate(model, glm::vec3(1.0f, -2.5f, 0.0f));
-  //      model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f)); // Reducir escala
-  //      glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-  //      flame.Draw(shader);
-
-  //      model = glm::mat4(1.0f);
-  //      model = glm::translate(model, glm::vec3(-2.0f, -2.0f, 0.0f));
-  //      model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f)); // Reducir escala
-  //      glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-  //      chair.Draw(shader);
        
 
         // Swap the buffers
