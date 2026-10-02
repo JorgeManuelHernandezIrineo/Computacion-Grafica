@@ -1,7 +1,7 @@
-// Previo 7 : Texturizado
+// Práctica 7 : Texturizado
 // Hernandez Irineo Jorge Manuel
 // Núm . de cuenta: 423045291
-// Fecha: 27/09/2026
+// Fecha: 2/10/2026
 
 
 #include <iostream>
@@ -106,18 +106,64 @@ int main()
 	GLfloat vertices[] =
 	{
 		// Positions            // Colors              // Texture Coords
-		-0.5f, -0.5f, 0.0f,    1.0f, 1.0f,1.0f,		0.0f,0.0f,
-		0.5f, -0.5f, 0.0f,	   1.0f, 1.0f,1.0f,		2.0f,0.0f,
-		0.5f,  0.5f, 0.0f,     1.0f, 1.0f,1.0f,	    2.0f,2.0f,
-		-0.5f,  0.5f, 0.0f,    1.0f, 1.0f,1.0f,		0.0f,2.0f,
+		/*-0.5f, -0.5f, 0.0f,    1.0f, 1.0f,1.0f,		0.0f,0.0f,
+		0.5f, -0.5f, 0.0f,	   1.0f, 1.0f,1.0f,		1.0f,0.0f,
+		0.5f,  0.5f, 0.0f,     1.0f, 1.0f,1.0f,	    1.0f,1.0f,
+		-0.5f,  0.5f, 0.0f,    1.0f, 1.0f,1.0f,		0.0f,1.0f,*/
 
+		// CARA FRONTAL "You Choose"
+		-0.5f, -0.5f,  0.5f,   1.0f, 1.0f, 1.0f,   0.333f, 0.505f,
+		 0.5f, -0.5f,  0.5f,   1.0f, 1.0f, 1.0f,   0.625f, 0.505f,
+		 0.5f,  0.5f,  0.5f,   1.0f, 1.0f, 1.0f,   0.625f, 0.744f,
+		-0.5f,  0.5f,  0.5f,   1.0f, 1.0f, 1.0f,   0.333f, 0.744f,
+
+		// CARA TRASERA "Massage" 
+		-0.5f, -0.5f, -0.5f,   1.0f, 1.0f, 1.0f,   0.624f, 0.273f,
+		 0.5f, -0.5f, -0.5f,   1.0f, 1.0f, 1.0f,   0.335f, 0.273f,
+		 0.5f,  0.5f, -0.5f,   1.0f, 1.0f, 1.0f,   0.335f, 0.51f,
+		-0.5f,  0.5f, -0.5f,   1.0f, 1.0f, 1.0f,   0.624f, 0.51f,
+
+		// CARA IZQUIERDA "Lick"
+		-0.5f, -0.5f, -0.5f,   1.0f, 1.0f, 1.0f,   0.05f,   0.505f,
+		-0.5f, -0.5f,  0.5f,   1.0f, 1.0f, 1.0f,   0.337f, 0.505f,
+		-0.5f,  0.5f,  0.5f,   1.0f, 1.0f, 1.0f,   0.337f, 0.745f,
+		-0.5f,  0.5f, -0.5f,   1.0f, 1.0f, 1.0f,   0.05f,   0.745f,
+
+		// CARA DERECHA "Tickle"
+		 0.5f, -0.5f,  0.5f,   1.0f, 1.0f, 1.0f,   0.615f, 0.505f,
+		 0.5f, -0.5f, -0.5f,   1.0f, 1.0f, 1.0f,   0.9099f,   0.505f,
+		 0.5f,  0.5f, -0.5f,   1.0f, 1.0f, 1.0f,   0.9099f,   0.742f,
+		 0.5f,  0.5f,  0.5f,   1.0f, 1.0f, 1.0f,   0.615f, 0.742f,
+
+		 // CARA SUPERIOR "Kiss" 
+		 -0.5f,  0.5f,  0.5f,   1.0f, 1.0f, 1.0f,   0.333f, 0.743f,
+		  0.5f,  0.5f,  0.5f,   1.0f, 1.0f, 1.0f,   0.624f, 0.743f,
+		  0.5f,  0.5f, -0.5f,   1.0f, 1.0f, 1.0f,   0.624f, 0.98f,
+		 -0.5f,  0.5f, -0.5f,   1.0f, 1.0f, 1.0f,   0.333f, 0.98f,
+
+		 // CARA INFERIOR "Partner Chooses" 
+		 -0.5f, -0.5f, -0.5f,   1.0f, 1.0f, 1.0f,   0.333f, 0.03611f,
+		  0.5f, -0.5f, -0.5f,   1.0f, 1.0f, 1.0f,   0.6224f, 0.03611f,
+		  0.5f, -0.5f,  0.5f,   1.0f, 1.0f, 1.0f,   0.6224f, 0.2777f,
+		 -0.5f, -0.5f,  0.5f,   1.0f, 1.0f, 1.0f,   0.333f, 0.2777f
+	
 		
 	};
 
 	GLuint indices[] =
-	{  // Note that we start from 0!
-		0,1,3,
-		1,2,3
+	{  
+		// Frente
+		0, 1, 2,   2, 3, 0,
+		// Detras
+		4, 5, 6,   6, 7, 4,
+		// Izquierda
+		8, 9, 10,  10, 11, 8,
+		// Derecha
+		12, 13, 14, 14, 15, 12,
+		// Superior
+		16, 17, 18, 18, 19, 16,
+		// inferior
+		20, 21, 22, 22, 23, 20,
 	
 	};
 
@@ -155,9 +201,9 @@ int main()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR/*GL_NEAREST_MIPMAP_NEAREST*/);
 	// Diffuse map
-	image = stbi_load("images/FI2.png", &textureWidth, &textureHeight, &nrChannels,0);
+	image = stbi_load("images/DadoLover.png", &textureWidth, &textureHeight, &nrChannels,0);
 	glBindTexture(GL_TEXTURE_2D, texture1);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureWidth, textureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 	glGenerateMipmap(GL_TEXTURE_2D);
@@ -209,10 +255,13 @@ int main()
 		// Set matrices
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+
+		//glm::mat4 model(1.0f);
+		//model = glm::rotate(model, (GLfloat)glfwGetTime() * 1.0f, glm::vec3(0.5f, 1.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		// Draw the light object (using light's vertex attributes)
+		
 		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 
 		// Swap the screen buffers
@@ -231,6 +280,7 @@ int main()
 // Moves/alters the camera positions based on user input
 void DoMovement()
 {
+	
 	// Camera controls
 	if (keys[GLFW_KEY_W] || keys[GLFW_KEY_UP])
 	{
