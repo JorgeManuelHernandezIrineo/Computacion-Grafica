@@ -1,8 +1,8 @@
-//Previo 8: Materiales e Iluminacion
+//Práctica 8: Materiales e Iluminacion
 // Hernández Irineo Jorge MAnuel
 // Num. de cuenta: 423045291
 // Laboratorio de computación gráfica
-// Fecha: 4-octubre-2026
+// Fecha: 9-octubre-2026
 
 // Std. Includes
 #include <string>
@@ -53,6 +53,8 @@ GLfloat deltaTime = 0.0f;
 GLfloat lastFrame = 0.0f;
 float rot = 0.0f;
 bool activanim = false;
+
+float sunMoonAngle = 0.0f; // Ángulo para la órbita sincronizada
 
 int main()
 {
@@ -110,8 +112,15 @@ int main()
 
 
     // Load models
-    Model red_dog((char*)"Models/RedDog.obj");
-	Model green_herb((char*)"Models/eb_house_plant_01.obj");
+    Model dog((char*)"C:/Users/JORGE/Documents/FI/S08/Computación Gráfica/Carga de Modelos/Main/Models/RedDog.obj");
+    Model plant((char*)"Models/eb_house_plant_01.obj");
+    Model table((char*)"Models/16697_Straight_Leg_Round_Table_Oak_V1.obj");
+    Model cup((char*)"Models/Plastic_Cup.obj");
+    Model chair((char*)"Models/chair.obj");
+    Model hat((char*)"Models/hat.obj");
+    Model flame((char*)"Models/flame.obj");
+    Model moon((char*)"Models/Moon 2K.obj");
+    Model sun((char*)"Models/Airless_2.obj");
 
     glm::mat4 projection = glm::perspective(camera.GetZoom(), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 100.0f);
 
@@ -226,14 +235,14 @@ int main()
 
 
         // Set lights properties
-		glUniform3f(glGetUniformLocation(lightingShader.Program, "light.ambient"), 0.2f, 0.2f, 0.2f);
-        glUniform3f(glGetUniformLocation(lightingShader.Program, "light.diffuse"), 0.8f, 0.8f, 0.8f);
-        glUniform3f(glGetUniformLocation(lightingShader.Program, "light.specular"), 1.0f, 1.0f, 1.0f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "light.ambient"), 0.1f, 0.1f, 0.1f);
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "light.diffuse"), 1.0f, 0.9f, 0.7f);
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "light.specular"), 1.0f, 1.0f, 0.9f);
 
         glUniform3f(glGetUniformLocation(lightingShader.Program, "light2.position"), lightPos2.x + movelightPos2, lightPos2.y + movelightPos2, lightPos2.z + movelightPos2);
-        glUniform3f(glGetUniformLocation(lightingShader.Program, "light2.ambient"), 0.0f, 0.0f, 0.2f);
-        glUniform3f(glGetUniformLocation(lightingShader.Program, "light2.diffuse"), 0.0f, 0.0f, 1.0f);
-        glUniform3f(glGetUniformLocation(lightingShader.Program, "light2.specular"), 0.5f, 0.5f, 1.0f);
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "light2.ambient"), 0.05f, 0.05f, 0.08f);
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "light2.diffuse"), 0.3f, 0.4f, 0.6f);
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "light2.specular"), 0.4f, 0.5f, 0.7f);
 
         glm::mat4 view = camera.GetViewMatrix();
         glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
@@ -251,29 +260,137 @@ int main()
 
 
         // Draw the loaded model
+       //1. Draw the loaded model
         glm::mat4 model(1);
-        model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
-        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-        glBindVertexArray(VAO);
-		red_dog.Draw(lightingShader);
-        //glDrawArrays(GL_TRIANGLES, 0, 36);
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        dog.Draw(shader);
 
-        glm::mat4 model2(1.0f);
-        model2 = glm::translate(model2, glm::vec3(-3.0f, 0.0f, -2.0f)); 
-        model2 = glm::scale(model2, glm::vec3(0.2f, 0.2f, 0.2f));      
-        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model2));
-        green_herb.Draw(lightingShader);
+        //// Luna
+        //model = glm::mat4(1.0f);
+        //model = glm::translate(model, glm::vec3(4.0f, 4.0f, 0.0f));
+        ////model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        ////model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        //model = glm::scale(model, glm::vec3(0.30f, 0.3f, 0.3f));
+        //glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        //moon.Draw(shader);
+
+        //// Sol
+        //model = glm::mat4(1.0f);
+        //model = glm::translate(model, glm::vec3(-4.0f, -4.0f, 0.0f));
+        ////model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        ////model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        //model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+        //glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        //sun.Draw(shader);
+
+        // Radio de la órbita circular alrededor del perro
+        float radioOrbita = 4.0f;
+
+        // --- LUNA (Órbita sincronizada) ---
+        model = glm::mat4(1.0f);
+        // Usamos seno y coseno para moverla en círculo alrededor del origen (donde está el perro)
+        float moonX = sin(sunMoonAngle) * radioOrbita;
+        float moonZ = cos(sunMoonAngle) * radioOrbita;
+        lightPos = glm::vec3(moonX, 0.0f, moonZ);
+
+        model = glm::translate(model, glm::vec3(moonX, 0.0f, moonZ)); // Altura fija en Y = 2.0f
+        model = glm::scale(model, glm::vec3(0.30f, 0.3f, 0.3f));
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        moon.Draw(shader);
+
+        // --- SOL (Órbita sincronizada opuesta) ---
+        model = glm::mat4(1.0f);
+        // Al sumar M_PI (o 180 grados), el Sol se mantiene exactamente del lado opuesto a la Luna
+        float sunX = sin(sunMoonAngle + 3.1416f) * radioOrbita;
+        float sunZ = cos(sunMoonAngle + 3.1416f) * radioOrbita;
+        lightPos2 = glm::vec3(sunX, 0.0f, sunZ);
+
+        model = glm::translate(model, glm::vec3(sunX, 0.0f, sunZ));
+        model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        sun.Draw(shader);
+
+        // 2. EL SILLÓN (Justo debajo y un poco atrás del perro)
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(-0.3f, -0.35f, -0.5f));
+        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        chair.Draw(shader);
+
+        // 3. EL SOMBRERO 
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(0.0f, -1.35f, 0.3f));
+        model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        hat.Draw(shader);
+
+        // 4. LA MESA 
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(2.5f, -1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        table.Draw(shader);
+
+        // 5. EL VASO DE CAFÉ 
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(2.2f, -0.65f, 0.2f));
+        model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        cup.Draw(shader);
+
+        // 6. LA PLANTA 
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(2.8f, -0.65f, -0.2f));
+        model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        plant.Draw(shader);
+
+        // 7. LAS FLAMAS 
+        // Flama 1 Fondo Izquierda
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(-2.5f, -1.0f, -1.5f));
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.25f, 0.25f, 0.25f)); // Más grande
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        flame.Draw(shader);
+
+        // Flama 2  detrás de la mesa
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(6.0f, -0.2f, -2.0f));
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.35f, 0.35f, 0.35f)); // Aún más grande
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        flame.Draw(shader);
+
+        // Flama 3 frente a la mesa
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(6.0f, -1.5f, 0.0f));
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.35f, 0.35f, 0.35f)); // Aún más grande
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        flame.Draw(shader);
+
+        // Flama 4 Enfrente a la izquierda
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(-1.5f, -1.5f, 2.0f));
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        flame.Draw(shader);
 
         glBindVertexArray(0);
 
 
 
-        lampshader.Use();
+        /*lampshader.Use();
         glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-        glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
+        glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));*/
         //glBindVertexArray(VAO);
 
-        model = glm::mat4(1.0f);
+    /*    model = glm::mat4(1.0f);
         model = glm::translate(model, lightPos + movelightPos);
         model = glm::scale(model, glm::vec3(0.3f));
         glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
@@ -285,7 +402,7 @@ int main()
         modelLamp2 = glm::translate(modelLamp2, lightPos2 + movelightPos2);
         modelLamp2 = glm::scale(modelLamp2, glm::vec3(0.3f));
         glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "model"), 1, GL_FALSE, glm::value_ptr(modelLamp2));
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        glDrawArrays(GL_TRIANGLES, 0, 36);*/
 
         glBindVertexArray(0);
 
@@ -375,6 +492,14 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode
         movelightPos2 -= 0.1f;
     }
 
+    if (keys[GLFW_KEY_Z])
+    {
+        sunMoonAngle += 0.05f; // Gira en un sentido
+    }
+    if (keys[GLFW_KEY_X])
+    {
+        sunMoonAngle -= 0.05f; // Gira en sentido contrario
+    }
 
 }
 
