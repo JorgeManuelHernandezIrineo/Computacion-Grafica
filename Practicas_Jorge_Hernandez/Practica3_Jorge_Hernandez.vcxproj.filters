@@ -57,7 +57,7 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Iluminacion.cpp">
+    <ClCompile Include="fuentesDeLuz.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
