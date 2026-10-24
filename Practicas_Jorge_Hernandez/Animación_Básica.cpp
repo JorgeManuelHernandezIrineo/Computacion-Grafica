@@ -1,6 +1,6 @@
-// Previo 10 - fuentes de luz
+// Practica 10 - Animación Básica
 // Hernández Irineo Jorge Manuel
-// Fecha: 18 - octubre - 2026
+// Fecha: 23 - octubre - 2026
 // No.de cuenta : 423045291
 #include <iostream>
 #include <cmath>
@@ -109,13 +109,21 @@ glm::vec3 Light1 = glm::vec3(0);
 //float rotBall = 0;
 //bool AnimBall = false;
 
-// Animación de la pelota
-float ballAnimTime = 0.0f;
-bool AnimBall = false;
+// Animación de la pelota Previo
+//float ballAnimTime = 0.0f;
+//bool AnimBall = false;
 
-// Posición de la nariz del perro
-glm::vec3 dogNose(0.0f, -0.2f, 0.8f);
-glm::vec3 currentBallPos = dogNose;
+// Variables para la animación circular del perro y la pelota
+float animTime = 0.0f;
+float circleRadius = 1.8f; // Radio del círculo sobre el pasto 
+bool AnimBall = false;     // Interruptor con la tecla N
+// Posiciones y rotaciones calculadas
+//glm::vec3 dogNose(0.0f, -0.2f, 0.8f);
+//glm::vec3 currentBallPos = dogNose;
+glm::vec3 dogPos(0.0f, 0.0f, 0.0f);
+glm::vec3 ballPos(0.0f, 0.0f, 0.0f);
+float dogRotAngle = 0.0f;
+float hitPulse = 0.0f;
 // Deltatime
 GLfloat deltaTime = 0.0f;	// Time between current frame and last frame
 GLfloat lastFrame = 0.0f;  	// Time of last frame
@@ -292,12 +300,20 @@ int main()
 	
 		
 		//Carga de modelo 
-        view = camera.GetViewMatrix();	
+        view = camera.GetViewMatrix();
+
+
 		model = glm::mat4(1);
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Piso.Draw(lightingShader);
 
+		/*model = glm::mat4(1);
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);
+		Dog.Draw(lightingShader);*/
 		model = glm::mat4(1);
+		model = glm::translate(model, dogPos); // Mueve al perro en su trayectoria circular y altura de salto
+		model = glm::rotate(model, glm::radians(dogRotAngle), glm::vec3(0.0f, 1.0f, 0.0f)); // Rota hacia el frente del movimiento
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);
 		Dog.Draw(lightingShader);
@@ -305,12 +321,18 @@ int main()
 		model = glm::mat4(1);
 		glEnable(GL_BLEND);//Avtiva la funcionalidad para trabajar el canal alfa
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		model = glm::translate(model, ballPos); // Posiciona la pelota en su órbita inversa
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 1);
-		model = glm::translate(model, currentBallPos);// En lugar de rotar, trasladamos la pelota a la posición interpolada
-		//model = glm::rotate(model, glm::radians(rotBall), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-	    Ball.Draw(lightingShader); 
+		Ball.Draw(lightingShader);
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 1);
+		//model = glm::translate(model, currentBallPos);// En lugar de rotar, trasladamos la pelota a la posición interpolada
+		////model = glm::rotate(model, glm::radians(rotBall), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+	 //   Ball.Draw(lightingShader); 
+
+
 		glDisable(GL_BLEND);  //Desactiva el canal alfa 
 		glBindVertexArray(0);
 	
@@ -325,20 +347,22 @@ int main()
 		// Set matrices
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
-		model = glm::mat4(1);
-		model = glm::translate(model, lightPos);
-		model = glm::scale(model, glm::vec3(0.2f)); // Make it a smaller cube
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		// Draw the light object (using light's vertex attributes)
-		
-			model = glm::mat4(1);
-			model = glm::translate(model, pointLightPositions[0]);
-			model = glm::scale(model, glm::vec3(0.2f)); // Make it a smaller cube
-			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-			glBindVertexArray(VAO);
-			glDrawArrays(GL_TRIANGLES, 0, 36);
-		
-		glBindVertexArray(0);
+
+		//Caja de luz
+		//model = glm::mat4(1);
+		//model = glm::translate(model, lightPos);
+		//model = glm::scale(model, glm::vec3(0.2f)); // Make it a smaller cube
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//// Draw the light object (using light's vertex attributes)
+		//
+		//model = glm::mat4(1);
+		//model = glm::translate(model, pointLightPositions[0]);
+		//model = glm::scale(model, glm::vec3(0.2f)); // Make it a smaller cube
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//glBindVertexArray(VAO);
+		//glDrawArrays(GL_TRIANGLES, 0, 36);
+		//
+		//glBindVertexArray(0);
 
 
 
@@ -458,17 +482,38 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 void Animation() {
 	if (AnimBall)
 	{	
-		if (AnimBall)
-		{
-			// Incrementamos el tiempo de animación 
-			ballAnimTime += 0.0008f; 
+		// Incrementamos el tiempo de animación de forma fluida
+		animTime += 0.0008f;
+		// Ángulos opuestos para la trayectoria circular
+		float dogAngle = animTime;
+		float ballAngle = -animTime;
+		// Coordenadas en el plano XZ 
+		dogPos.x = circleRadius * cos(dogAngle);
+		dogPos.z = circleRadius * sin(dogAngle);
+		ballPos.x = circleRadius * cos(ballAngle);
+		ballPos.z = circleRadius * sin(ballAngle);
+		// Alturas base y factor de impacto 
+		float dogBaseY = 0.0f;
+		float ballBaseY = 0.9f;
 
-			// Usamos sin() para obtener un valor que oscile entre 0.0 y 1.0 de forma suave
-			float t = (sin(ballAnimTime) + 1.0f) * 0.5f;
+		float hitPulse = static_cast<float>(pow(abs(cos(dogAngle)), 15.0));
+		// El perro sube y la pelota baja para encontrarse
+		dogPos.y = dogBaseY + (hitPulse * 0.45f);
+		ballPos.y = ballBaseY - (hitPulse * 0.45f);
+		// Orientación del perro hacia donde se desplaza
+		dogRotAngle = -glm::degrees(dogAngle) - 45.0f;
 
-			// Interpolamos linealmente entre la nariz del perro y la posición actual de la luz 0
-			currentBallPos = glm::mix(dogNose, pointLightPositions[0], t);
-		}
+		/*if (AnimBall)*/
+		//{
+		//	// Incrementamos el tiempo de animación 
+		//	ballAnimTime += 0.0008f; 
+
+		//	// Usamos sin() para obtener un valor que oscile entre 0.0 y 1.0 de forma suave
+		//	float t = (sin(ballAnimTime) + 1.0f) * 0.5f;
+
+		//	// Interpolamos linealmente entre la nariz del perro y la posición actual de la luz 0
+		//	currentBallPos = glm::mix(dogNose, pointLightPositions[0], t);
+		//}
 		//rotBall += 0.2f;
 		//printf("%f", rotBall);
 	}
