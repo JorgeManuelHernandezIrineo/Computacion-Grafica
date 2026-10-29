@@ -1,6 +1,6 @@
-// Previo 11 - Animación por maquinas de estado
+// Practica 11 - Animación por maquinas de estado
 // Hernández Irineo Jorge Manuel
-// Fecha: 25 - octubre - 2026
+// Fecha: 30 - octubre - 2026
 // No.de cuenta : 423045291
 #include <iostream>
 #include <cmath>
@@ -108,7 +108,7 @@ float rotBall = 0.0f;
 bool AnimBall = false;
 bool AnimDog = false;
 float rotDog = 0.0f;
-int dogAnim = 0;
+bool dogAnim = false;
 float FLegs = 0.0f;
 float RLegs = 0.0f;
 float head = 0.0f;
@@ -117,7 +117,9 @@ glm::vec3 dogPos (0.0f,0.0f,0.0f);
 float dogRot = 0.0f;
 bool step = false;
 
-
+int pathState = 0;     // Controla en qué tramo del circuito va el perro (0 a 6)
+float targetDogRot = 0.0f; // Ángulo objetivo al que debe girar el cuerpo
+float headY = 0.0f;        // Giro lateral de la cabeza para anticipar esquinas
 
 // Deltatime
 GLfloat deltaTime = 0.0f;	// Time between current frame and last frame
@@ -317,9 +319,15 @@ int main()
 		//Head
 		model = modelTemp;
 		model = glm::translate(model, glm::vec3(0.0f, 0.093f, 0.208f));
-		model = glm::rotate(model, glm::radians(head), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, glm::radians(headY), glm::vec3(0.0f, 1.0f, 0.0f)); // <--- NUEVO: Giro lateral anticipado
+		model = glm::rotate(model, glm::radians(head), glm::vec3(0.0f, 0.0f, 1.0f));  // Inclinación al caminar
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		HeadDog.Draw(lightingShader);
+		/*model = modelTemp;
+		model = glm::translate(model, glm::vec3(0.0f, 0.093f, 0.208f));
+		model = glm::rotate(model, glm::radians(head), glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		HeadDog.Draw(lightingShader);*/
 		//Tail 
 		model = modelTemp;
 		model = glm::translate(model, glm::vec3(0.0f, 0.026f, -0.288f));
@@ -505,8 +513,16 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 	}
 	if (keys[GLFW_KEY_B])
 	{
-		dogAnim = 1;
-
+		//dogAnim = 1;
+		dogAnim = !dogAnim; // Alterna entre encendido (1) y apagado (0)
+		if (!dogAnim) {
+			// Si se detiene con la tecla, reiniciamos extremidades a posición neutral
+			FLegs = 0.0f;
+			RLegs = 0.0f;
+			head = 0.0f;
+			tail = 0.0f;
+			headY = 0.0f;
+		}
 	}
 }
 void Animation() {
@@ -522,55 +538,154 @@ void Animation() {
 		//printf("%f", rotBall);
 	}
 	if (dogAnim==1) {//Animacion activada
-		dogPos.z += 0.0001;	
+		float velocidad = 0.00020f;
+		float velocidadGiro = 0.8f; // Velocidad para los giros graduales del cuerpo
 
-		// Define los límites del área de pasto 
-		float limiteMinZ = -2.0f; 
-		float limiteMaxZ = 2.0f; 
-		float limiteMinX = -2.0f;
-		float limiteMaxX = 2.0f;
-
-		// Variable temporal para simular el siguiente paso
-		float siguienteZ = dogPos.z + 0.0001f;
-		float siguienteX = dogPos.x; 
-		// Si el perro se mueve en X, añádele su incremento aquí
-
-		// Verificamos si el perro sigue dentro del área del piso
-		if (siguienteZ >= limiteMinZ && siguienteZ <= limiteMaxZ &&
-			siguienteX >= limiteMinX && siguienteX <= limiteMaxX)
-		{
-			// Si está dentro, continúa avanzando y moviendo sus patas
-			dogPos.z = siguienteZ;
-			if (!step) {//Estado 1
-				FLegs += 0.3f;
-				RLegs += 0.3f;
-				head += 0.3f;
-				tail += 0.3f;
-				if (RLegs >= 25.0f) {
-					step = true;
-				}
-			}
-			else {
-				FLegs -= 0.3f;
-				RLegs -= 0.3f;
-				head -= 0.3f;
-				tail -= 0.3f;
-				if (RLegs <= -25.0f) {
-					step = false;
-				}
+		// Animación constante de las patas y cuerpo al caminar
+		if (!step) {
+			FLegs += 0.3f;
+			RLegs += 0.3f;
+			//head += 0.3f;
+			tail += 0.3f;
+			if (RLegs >= 35.0f) {
+				step = true;
 			}
 		}
 		else {
-			// Si llega al límite del piso, detenemos la animación del perro (o apagamos dogAnim)
-			dogAnim = 0; // Se detiene y deja de caminar para no salir del área
-
-			//reiniciar las patas a su posición neutral (0) si deseas
-			FLegs = 0.0f;
-			RLegs = 0.0f;
-			head = 0.0f;
-			tail = 0.0f;
+			FLegs -= 0.3f;
+			RLegs -= 0.3f;
+			//head -= 0.3f;
+			tail -= 0.3f;
+			if (RLegs <= -35.0f) {
+				step = false;
+			}
+		
 		}
 
+		// --- MÁQUINA DE ESTADOS CON CURVAS SUAVES Y ANTICIPACIÓN ---
+		switch (pathState) {
+		case 0: // Tramo E -> A (Avanza en Z positivo)
+			dogPos.z += velocidad;
+			targetDogRot = 0.0f;
+			dogRot += (targetDogRot - dogRot) * 0.1f;
+
+			if (dogPos.z >= 1.6f) {
+				headY = 45.0f; // Anticipa la cabeza
+			}
+			// Empezamos a curvar antes de llegar al punto A (a partir de Z = 1.8f)
+			if (dogPos.z >= 1.8f) {
+				pathState = 1; // Entra en zona de curva hacia B
+			}
+			break;
+
+		case 1: // Curva suave de A hacia B (Combina Z y empieza a sumar X + Giro)
+			dogPos.z += velocidad * 0.8f;
+			dogPos.x += velocidad * 0.8f; // Comienza a abrirse hacia la derecha
+			targetDogRot = 90.0f;         // Gira gradualmente hacia la derecha
+			dogRot += (targetDogRot - dogRot) * 0.1f;
+
+			// Al concluir la curva y llegar a la altura de B, se alinea recto en X
+			if (dogPos.z >= 2.2f) {
+				dogPos.z = 2.2f;          // Fija el límite exacto en Z
+				headY = 0.0f;
+				pathState = 2;
+			}
+			break;
+
+		case 2: // Tramo A -> B (Avanza recto en X positivo)
+			dogPos.x += velocidad;
+			targetDogRot = 90.0f;
+			dogRot += (targetDogRot - dogRot) * 0.1f;
+
+			if (dogPos.x >= 1.8f) {
+				headY = 45.0f; // Anticipa la cabeza hacia arriba
+			}
+			if (dogPos.x >= 2.0f) {
+				pathState = 3; // Entra en zona de curva hacia C
+			}
+			break;
+
+		case 3: // Curva suave de B hacia C (Combina X y empieza a restar Z + Giro)
+			dogPos.x += velocidad * 0.8f;
+			dogPos.z -= velocidad * 0.8f; // Comienza a doblar hacia arriba
+			targetDogRot = 180.0f;        // Gira hacia arriba
+			dogRot += (targetDogRot - dogRot) * 0.1f;
+
+			if (dogPos.x >= 2.2f) {
+				dogPos.x = 2.2f;          // Fija el límite exacto en X
+				headY = 0.0f;
+				pathState = 4;
+			}
+			break;
+
+		case 4: // Tramo B -> C (Avanza recto en Z negativo hacia arriba)
+			dogPos.z -= velocidad;
+			targetDogRot = 180.0f;
+			dogRot += (targetDogRot - dogRot) * 0.1f;
+
+			if (dogPos.z <= -1.8f) {
+				headY = 45.0f; // Anticipa la cabeza hacia la izquierda
+			}
+			if (dogPos.z <= -2.0f) {
+				pathState = 5; // Entra en zona de curva hacia D
+			}
+			break;
+
+		case 5: // Curva suave de C hacia D (Combina Z negativo y empieza a restar X + Giro)
+			dogPos.z -= velocidad * 0.8f;
+			dogPos.x -= velocidad * 0.8f; // Comienza a doblar a la izquierda
+			targetDogRot = -90.0f;        // Gira hacia la izquierda
+			dogRot += (targetDogRot - dogRot) * 0.1f;
+
+			if (dogPos.z <= -2.2f) {
+				dogPos.z = -2.2f;         // Fija el límite exacto en Z
+				headY = 0.0f;
+				pathState = 6;
+			}
+			break;
+
+		case 6: // Tramo C -> D (Avanza recto en X negativo hacia la izquierda)
+			dogPos.x -= velocidad;
+			targetDogRot = -90.0f;
+			dogRot += (targetDogRot - dogRot) * 0.1f;
+
+			if (dogPos.x <= -1.8f) {
+				headY = 45.0f; // Anticipa la cabeza hacia la diagonal central
+			}
+			if (dogPos.x <= -2.0f) {
+				pathState = 7; // Entra en zona de curva hacia la diagonal E
+			}
+			break;
+
+		case 7: // Curva suave de D hacia la diagonal E
+			dogPos.x -= velocidad * 0.8f;
+			dogPos.z += velocidad * 0.8f; // Comienza la bajada en diagonal
+			targetDogRot = 45.0f;         // Ajusta el hocico hacia el centro
+			dogRot += (targetDogRot - dogRot) * 0.1f;
+
+			if (dogPos.x <= -2.2f) {
+				dogPos.x = -2.2f;
+				headY = 0.0f;
+				pathState = 8;
+			}
+			break;
+
+		case 8: // Tramo D -> E (Diagonal limpia de regreso al centro)
+			dogPos.x += velocidad * 0.8f;
+			dogPos.z += velocidad * 0.8f;
+			targetDogRot = 45.0f;
+			dogRot += (targetDogRot - dogRot) * 0.1f;
+
+			// Al llegar de vuelta al centro E (0,0), reinicia el ciclo de forma infinita
+			if (dogPos.x >= 0.0f && dogPos.z >= 0.0f) {
+				dogPos.x = 0.0f;
+				dogPos.z = 0.0f;
+				dogRot = 0.0f;
+				targetDogRot = 0.0f;
+				pathState = 0; // Vuelve a empezar el circuito sin detenerse
+			}
+			break;
+		}
 		
 	}
 	
