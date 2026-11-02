@@ -539,7 +539,7 @@ void Animation() {
 	}
 	if (dogAnim==1) {//Animacion activada
 		float velocidad = 0.00020f;
-		float velocidadGiro = 0.8f; // Velocidad para los giros graduales del cuerpo
+		float velocidadGiro = 0.4f; // Velocidad para los giros graduales del cuerpo
 
 		// Animación constante de las patas y cuerpo al caminar
 		if (!step) {
